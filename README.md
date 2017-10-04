@@ -1,6 +1,6 @@
 ## thatpassengeronthetrain
 
-A Wireshark plugin that finds patterns in libpcap files
+thatpassengeronthetrain, tpott (pronounced teapot), it's a Wireshark plugin that finds patterns in libpcap files.
 
 ### Features
 
