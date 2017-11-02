@@ -1,25 +1,27 @@
 ## thatpassengeronthetrain
 
-`thatpassengeronthetrain`, or `tpott` (pronounced teapot), it's a tool that finds patterns in libpcap files.
+`thatpassengeronthetrain`, or `tpott` (pronounced teapot), it's a tool that finds
+patterns in libpcap files.
 
 ### Usage
 
 ```bash
-$ make all && ./tpott
+$ make -s all && ./dist/tpott
 ```
 
 ### Features
 
 #### Incremental id
 
-It could recognise incremental ids network protocols, for example in 
+It recognises incremental ids network protocols, for example in
 
 ```
 cc 01 29 00 00 e0 ...
 cc 01 00 0f 40 e1 ...
 ```
 
-you notice how the id is incrementing between exchanges at the sixth byte.
+you notice how the id is incrementing between exchanges at the sixth byte. `tpott`
+would tell you how likely to expect an incremental id at that position.
 
 #### Packet identifier
 
@@ -28,5 +30,5 @@ you notice how the id is incrementing between exchanges at the sixth byte.
 ### Acknowledgements
 
 [This](https://github.com/seladb/PcapPlusPlus/blob/master/Examples/Tutorials/Tutorial-HelloWorld) helped
-a lot while looking around for examples on how to do stuff, actually this project started with exactly
-those files.
+a lot while looking around for examples on how to do stuff, actually this project
+started with exactly those files.
