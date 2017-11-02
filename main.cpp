@@ -5,10 +5,16 @@
 #include <iostream>
 #include <sstream>
 #include <map>
+#include <math.h>
 
 // what this code is trying to do is called
 // protocol tagging
 // look it up on the internet
+
+std::string toPercentage(double occurrencies, int total)
+{
+  return std::to_string((int) round(100 * occurrencies / total)) + "%";
+}
 
 /*std::vector<uint32_t>*/ void sequenceIdChances(std::vector< std::vector<uint32_t> > packets)
 {
@@ -30,12 +36,11 @@
 
     std::vector<uint32_t> shorterPacket = previousPacket.size() > currentPacket.size() ? currentPacket : previousPacket;
 
-    // printf("NEXT\n");
     for(uint32_t i = 0; i < shorterPacket.size(); i++)
       {
         if (previousPacket[i] + 1 == currentPacket[i])
           {
-            // use proper type
+            // TODO use proper type
             auto position = occurrencies.find(i);
             if(position != occurrencies.end())
               {
@@ -45,27 +50,26 @@
               {
                 occurrencies[i] = 1;
               }
-            printf("%d", i);
           }
       }
-    printf("\n");
 
     // again, the horror
+    // TODO move this in a utility lib?
     previousPacket.clear();
     for (uint32_t byte : currentPacket)
       {
         previousPacket.push_back(byte);
-        // printf("%d ", byte);
       }
-
-    for(uint32_t i = 0; i < occurrencies.size(); i++)
-      {
-        printf("%d: %d \n", i, occurrencies[i]);
-      }
-
-
-    printf("\n");
   }
+
+  for(uint32_t i = 0; i < occurrencies.size(); i++)
+    {
+      if (occurrencies[i] != 0)
+        {
+          auto chance = (double) occurrencies[i] / packets.size();
+          printf("I found a sequence id with %s chance at position %i\n", toPercentage(occurrencies[i], packets.size()).c_str(), i + 1);
+        }
+    }
 };
 
 std::string getProtocolTypeAsString(pcpp::ProtocolType protocolType)
