@@ -1,9 +1,5 @@
-#include <IPv4Layer.h>
-#include <TcpLayer.h>
 #include <Packet.h>
 #include <PcapFileDevice.h>
-#include <iostream>
-#include <sstream>
 #include <map>
 #include <math.h>
 

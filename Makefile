@@ -1,9 +1,8 @@
 include ./PcapPlusPlus/Dist/mk/PcapPlusPlus.mk
 
 all:
-	g++ $(PCAPPP_INCLUDES) -c -o main.o main.cpp
-	g++ $(PCAPPP_LIBS_DIR) -o tpott main.o $(PCAPPP_LIBS)
+	g++ $(PCAPPP_INCLUDES) -c -o dist/main.o main.cpp
+	g++ $(PCAPPP_LIBS_DIR) -o dist/tpott dist/main.o $(PCAPPP_LIBS)
 
 clean:
-	-@rm main.o  2>/dev/null || true
-	-@rm tpott  2>/dev/null || true
+	-@rm dist/*  2>/dev/null || true
