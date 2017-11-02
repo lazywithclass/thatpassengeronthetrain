@@ -4,10 +4,73 @@
 #include <PcapFileDevice.h>
 #include <iostream>
 #include <sstream>
+#include <map>
+
+// what this code is trying to do is called
+// protocol tagging
+// look it up on the internet
+
+/*std::vector<uint32_t>*/ void sequenceIdChances(std::vector< std::vector<uint32_t> > packets)
+{
+  bool firstRun = true;
+  std::map<int, int> occurrencies;
+  std::vector<uint32_t> previousPacket;
+  for (std::vector<uint32_t> currentPacket : packets) {
+    if (currentPacket.empty()) continue;
+
+    // oh god the horror
+    if (firstRun)
+      {
+        for (uint32_t byte : currentPacket) {
+          previousPacket.push_back(byte);
+        }
+        firstRun = false;
+        continue;
+      }
+
+    std::vector<uint32_t> shorterPacket = previousPacket.size() > currentPacket.size() ? currentPacket : previousPacket;
+
+    // printf("NEXT\n");
+    for(uint32_t i = 0; i < shorterPacket.size(); i++)
+      {
+        if (previousPacket[i] + 1 == currentPacket[i])
+          {
+            // use proper type
+            auto position = occurrencies.find(i);
+            if(position != occurrencies.end())
+              {
+                occurrencies[i] = occurrencies[i] + 1;
+              }
+            else
+              {
+                occurrencies[i] = 1;
+              }
+            printf("%d", i);
+          }
+      }
+    printf("\n");
+
+    // again, the horror
+    previousPacket.clear();
+    for (uint32_t byte : currentPacket)
+      {
+        previousPacket.push_back(byte);
+        // printf("%d ", byte);
+      }
+
+    for(uint32_t i = 0; i < occurrencies.size(); i++)
+      {
+        printf("%d: %d \n", i, occurrencies[i]);
+      }
+
+
+    printf("\n");
+  }
+};
 
 std::string getProtocolTypeAsString(pcpp::ProtocolType protocolType)
 {
-	switch (protocolType)
+  switch (protocolType)
     {
     case pcpp::Ethernet:
       return "Ethernet";
@@ -23,6 +86,8 @@ std::string getProtocolTypeAsString(pcpp::ProtocolType protocolType)
     }
 }
 
+std::vector< std::vector<uint32_t> > matrix;
+
 int main(int argc, char* argv[])
 {
   pcpp::PcapFileReaderDevice reader("pcaps/ProConOS-cold.pcapng");
@@ -32,34 +97,39 @@ int main(int argc, char* argv[])
       return 1;
     }
 
+  uint32_t lineNumber = 0;
   pcpp::RawPacket rawPacket;
   while (reader.getNextPacket(rawPacket))
     {
       pcpp::Packet parsedPacket(&rawPacket);
 
-
       for (pcpp::Layer* curLayer = parsedPacket.getFirstLayer(); curLayer != NULL; curLayer = curLayer->getNextLayer())
         {
-
           std::string layer = getProtocolTypeAsString(curLayer->getProtocol()).c_str();
           if (layer != "TCP")
             {
               continue;
             }
-          printf("\n");
 
+          std::vector<uint32_t> packetBytes;
+          // TODO create the vector here
+          // TODO dont add empty packets
           uint8_t* firstByteAfterHeader = curLayer->getLayerPayload();
-          size_t size = curLayer->getLayerPayloadSize();
-
-          for (int i = 0; i < size; i++)
+          for (uint32_t i = 0; i < curLayer->getLayerPayloadSize(); i++)
             {
-              std::cout << (uint32_t) firstByteAfterHeader[i] << " ";
+              packetBytes.push_back((uint32_t) firstByteAfterHeader[i]);
             }
+          matrix.push_back(packetBytes);
         }
+
+      lineNumber++;
     }
   reader.close();
+  printf("Finished scanning packets\n");
 
-  printf("No more packets\n");
+
+  sequenceIdChances(matrix);
+
   return 0;
 }
 
@@ -77,12 +147,12 @@ int main(int argc, char* argv[])
 
   cc 01 29 00 00 e0 100004006019ffffffffbd3937e000000000a485
   cc 01 00 0f 40 e1 00009225
-  */
-
-/*
-
-  function that finds out if there's a sequence id
-  to do so it takes each column and sees if the next one
-  is the previous plus 1
-
 */
+
+
+// first define a function that knows how to get the next
+// given the current value
+uint32_t successor(uint32_t current)
+{
+  return current + 1;
+}
