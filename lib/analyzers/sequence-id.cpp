@@ -1,6 +1,6 @@
 #include <map>
 
-/*std::vector<uint32_t>*/ void sequenceIdChances(std::vector< std::vector<uint32_t> > packets)
+void sequenceIdChances(std::vector< std::vector<uint32_t> > packets)
 {
   bool firstRun = true;
   std::map<int, int> occurrencies;
