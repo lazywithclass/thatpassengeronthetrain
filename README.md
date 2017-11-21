@@ -1,6 +1,6 @@
 ## thatpassengeronthetrain
 
-`thatpassengeronthetrain`, or `tpott` (pronounced teapot), it's a tool that finds patterns in libpcap files.
+`thatpassengeronthetrain`, or `tpott` (pronounced teapot), it's a tool that finds patterns in .pcap files.
 
 ### Usage
 
