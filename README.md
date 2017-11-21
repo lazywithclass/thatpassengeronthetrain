@@ -23,9 +23,13 @@ cc 01 00 0f 40 e1 ...
 you notice how the id is incrementing between exchanges at the sixth byte. `tpott`
 would tell you how likely to expect an incremental id at that position.
 
-#### Packet identifier
+### Request / response
 
-#### Function code
+TODO
+
+It recognises a packet and its response. At first it might be a good idea to bind this
+to a recognised feature that we know it's plausible to be true, for example an incremental
+id with a good percentage in respect to the total number of packets.
 
 ### Acknowledgements
 
