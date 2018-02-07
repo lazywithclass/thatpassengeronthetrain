@@ -36,9 +36,13 @@
 (test-case
     "finds sequence id if packets are not one right after the other"
   (let ([packets '(
-                   (#x01 #x01 #x03)
-                   (#x01 #x01)
-                   (#x01 #x01)
-                   (#x01 #x01 #x04))]
-        [expected (make-immutable-hash (list (cons 1 0) (cons 3 1) (cons 2 0)))])
+                   (#x00 #x10 #x03)
+                   (#x01 #x00)
+                   (#x00 #x11)
+                   (#x02 #x00 #x04)
+                   (#x00 #x12 #x04)
+                   (#x03 #x00 #x04)
+                   (#x02 #x01 #x04)
+                   (#x01 #x11 #x04))]
+        [expected (make-immutable-hash (list (cons 1 7) (cons 3 5) (cons 2 6)))])
     (check-equal? (run packets (make-immutable-hash)) expected)))
