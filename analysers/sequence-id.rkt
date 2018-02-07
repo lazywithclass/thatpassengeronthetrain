@@ -12,7 +12,7 @@
 
 (define (find-all-sequences-in-packet packets position occurrencies)
   (cond
-    ((= position (length (car packets))) occurrencies)
+    ((= position (+ (length (car packets)) 1)) occurrencies)
     (else
      (hash-union
       (hash-set occurrencies position (count-increments (cdr packets) (car packets) position 10))
@@ -22,12 +22,11 @@
 (define (count-increments packets packet position packets-limit)
   (cond
     ((null? packets) 0)
-    ((null? (cdr packets)) 0)
     ((= packets-limit 0) 0)
-    ((= (+ 1 (nth packet position)) (nth (car packets) position))
-     (+ 1 (count-increments (cdr packets) (car (cdr packets)) position 10)))
+    ((= (+ (nth packet position) 1) (nth (car packets) position))
+     (+ 1 (count-increments (cdr packets) packet position 10)))
     (else
-     (+ 0 (count-increments (cdr packets) (car (cdr packets)) position (- packets-limit 1))))))
+     (+ 0 (count-increments (cdr packets) packet position (- packets-limit 1))))))
 
 (define (nth l n)
   (cond
@@ -35,6 +34,4 @@
     ((= n 1) (car l))
     (else (nth (cdr l) (- n 1)))))
 
-(provide find-all-sequences-in-packet)
-(provide count-increments)
 (provide run)
