@@ -35,8 +35,7 @@
 
 (test-case
     "finds sequence id if packets are not one right after the other"
-  (let ([packets '(
-                   (#x00 #x10 #x03)
+  (let ([packets '((#x00 #x10 #x03)
                    (#x01 #x00)
                    (#x00 #x11)
                    (#x02 #x00 #x04)
