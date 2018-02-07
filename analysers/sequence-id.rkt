@@ -20,6 +20,7 @@
       #:combine/key (lambda (k v1 v2) (+ v1 v2))))))
 
 (define (count-increments packets packet position packets-limit)
+  "returns the number of increments at this position in this packet"
   (cond
     ((null? packets) 0)
     ((= packets-limit 0) 0)
