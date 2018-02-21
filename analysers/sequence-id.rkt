@@ -35,4 +35,12 @@
     (else
      (+ 0 (count-increments (cdr packets) packet word-size position (- packets-limit 1))))))
 
-(provide run)
+(define (format-result occurrencies)
+  (hash-map
+   occurrencies
+   (lambda (key value)
+     (when (not (= value 0))
+       (fprintf (current-output-port) "~s increments at byte #~s\n" value key)))))
+
+(provide run
+         format-result)

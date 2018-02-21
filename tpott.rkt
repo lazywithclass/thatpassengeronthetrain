@@ -1,8 +1,7 @@
 #lang racket
 
 (require "reader.rkt"
-         "analysers/sequence-id.rkt"
-         "printer.rkt")
+         "analysers/sequence-id.rkt")
 
 (let* ([bytes-read (read-bytes-from-stdin)]
        [sequence-ids-1 (run bytes-read (make-immutable-hash) 1)]
